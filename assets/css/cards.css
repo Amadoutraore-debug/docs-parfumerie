@@ -1,0 +1,161 @@
+/* =====================================================================
+   CARTES PRODUIT — style « billetterie » (visuel flouté, lignes à icônes)
+   ===================================================================== */
+.section-tight { padding: 64px 0; }
+.tk-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 22px; }
+.tk-head h2 { font-size: clamp(28px, 3vw, 36px); font-weight: 400; }
+.tk-head p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.section-dark .tk-head p { color: rgba(247, 242, 234, .6); }
+.tk-all { display: inline-flex; align-items: center; gap: 6px; background: var(--gold); color: var(--ink); font-weight: 700; font-size: 14.5px; padding: 8px 16px; border-radius: 999px; white-space: nowrap; transition: background .2s, transform .2s; }
+.tk-all:hover { background: var(--gold-soft); transform: translateX(2px); }
+
+/* pastilles de catégories */
+.chip { font-weight: 500; }
+.chip.active { background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 700; }
+.chip.active .n { opacity: .65; }
+
+/* carrousel */
+.rail-wrap { position: relative; }
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: 318px; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 4px 4px 14px; margin: 0 -4px; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; }
+.rail-btn { position: absolute; top: 100px; width: 44px; height: 44px; border-radius: 50%; background: #fff; color: var(--ink); box-shadow: 0 6px 20px -6px rgba(0, 0, 0, .45); display: grid; place-items: center; z-index: 3; transition: opacity .2s, transform .2s; }
+.rail-btn:hover { transform: scale(1.08); }
+.rail-btn.prev { left: -14px; }
+.rail-btn.next { right: -14px; }
+.rail-btn[disabled] { opacity: 0; pointer-events: none; }
+
+/* la carte */
+.grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px 14px; }
+.tk-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 4px 14px -6px rgba(0, 0, 0, .18); display: flex; flex-direction: column; cursor: pointer; color: var(--ink); transition: box-shadow .3s, transform .3s; }
+.tk-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 16px 34px -14px rgba(0, 0, 0, .35); }
+.tk-media { position: relative; aspect-ratio: 16 / 10.5; overflow: hidden; background: #1b1714; }
+.tk-bg { position: absolute; inset: -12%; width: 124%; height: 124%; max-width: none; object-fit: cover; filter: blur(18px) brightness(.85) saturate(1.2); }
+.tk-bg-color { position: absolute; inset: 0; }
+.tk-fg { position: absolute; inset: 0; display: grid; place-items: center; }
+.tk-fg img { width: 100%; height: 100%; object-fit: contain; transition: transform .6s; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .35)); }
+.tk-fg .bottle-svg { height: 86%; width: auto; transition: transform .6s; filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .35)); }
+.tk-card:hover .tk-fg img, .tk-card:hover .tk-fg .bottle-svg { transform: scale(1.05); }
+.tk-check { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--ink); display: grid; place-items: center; box-shadow: 0 0 0 3px rgba(255, 255, 255, .85); }
+.tk-promo { position: absolute; top: 12px; right: 12px; background: var(--wine); color: #fff; font-weight: 800; font-size: 13px; padding: 4px 10px; border-radius: 6px; font-variant-numeric: lining-nums; }
+.tk-tag { position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 6px; background: var(--ink); color: var(--gold-soft); font-weight: 700; font-size: 13px; padding: 5px 10px; border-radius: 6px; }
+.tk-out { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(20, 17, 15, .55); color: #fff; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 15px; }
+.tk-body { padding: 16px 16px 14px; display: flex; flex-direction: column; flex: 1; }
+.tk-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.tk-title { font-family: var(--sans); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .01em; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; margin-top: 4px; }
+.tk-fav { display: flex; flex-direction: column; align-items: center; color: var(--ink); line-height: 1; padding: 2px; flex: none; }
+.tk-fav small { font-size: 12.5px; margin-top: 3px; color: var(--muted); }
+.tk-fav.on { color: var(--wine); }
+.tk-fav.on .ico { fill: currentColor; }
+.tk-lines { margin: 12px 0 14px; display: grid; gap: 7px; }
+.tk-line { display: flex; align-items: center; gap: 9px; margin: 0; font-size: 15px; color: #4b443e; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tk-line .ico { color: var(--ink); opacity: .75; flex: none; }
+.tk-line.strong { font-weight: 700; color: var(--ink); }
+.tk-price { font-weight: 800; color: var(--gold-text); font-variant-numeric: lining-nums; }
+.tk-price .ico { color: var(--gold-text); opacity: 1; }
+.tk-price s { color: var(--muted); font-weight: 500; font-size: 13.5px; }
+.tk-stock { font-variant-numeric: lining-nums; }
+.tk-stock.low { color: var(--warn); font-weight: 700; }
+.tk-stock.low .ico { color: var(--warn); opacity: 1; }
+.tk-stock.out { color: var(--muted); }
+.tk-timer { color: var(--wine); font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
+.tk-timer .ico { color: var(--wine); opacity: 1; }
+.ci-flag { width: 14px; height: 18px; border-radius: 2px; flex: none; background: linear-gradient(90deg, #f77f00 33.3%, #fff 33.3% 66.6%, #009e60 66.6%); box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
+.tk-btn { margin-top: auto; width: 100%; padding: 11px 16px; border-radius: 999px; background: var(--ink); color: var(--gold-soft); font-weight: 700; font-size: 15.5px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .2s, color .2s; }
+.tk-btn:hover { background: var(--gold); color: var(--ink); }
+.tk-btn[disabled] { background: #e9e4dc; color: #9a918a; cursor: not-allowed; }
+.tk-foot { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; }
+.tk-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: var(--ink); font-weight: 800; font-size: 13px; display: grid; place-items: center; flex: none; overflow: hidden; }
+.tk-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.tk-seller { min-width: 0; flex: 1; line-height: 1.25; }
+.tk-seller small { display: block; font-size: 11.5px; color: var(--muted); }
+.tk-seller b { display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tk-more { background: var(--ink); color: #fff; font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; flex: none; }
+.tk-more:hover { background: var(--gold); color: var(--ink); }
+.skeleton { aspect-ratio: auto; height: 470px; border-radius: 12px; }
+.lbl-short { display: none; }
+
+@media (max-width: 640px) {
+  .section-tight { padding: 48px 0; }
+  .tk-head h2 { font-size: 26px; }
+  .tk-all { padding: 7px 13px; font-size: 13.5px; }
+  .rail { grid-auto-columns: 82%; }
+  .rail-btn { display: none; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px 10px; }
+  .grid .tk-body { padding: 12px 10px 10px; }
+  .grid .tk-title { font-size: 14px; }
+  .grid .tk-line { font-size: 13px; gap: 6px; }
+  .grid .tk-line .ico { width: 15px; height: 15px; }
+  .grid .tk-price s { display: none; }
+  .grid .tk-lines { margin: 8px 0 10px; gap: 5px; }
+  .grid .tk-btn { font-size: 13.5px; padding: 9px 8px; }
+  .grid .lbl-long { display: none; }
+  .grid .lbl-short { display: inline; }
+  .grid .tk-foot, .grid .tk-tag, .grid .hide-sm { display: none; }
+  .grid .tk-check { width: 22px; height: 22px; top: 8px; left: 8px; }
+  .grid .tk-promo { top: 8px; right: 8px; font-size: 11.5px; }
+  .grid .tk-fav .ico { width: 18px; height: 18px; }
+  .skeleton { height: 330px; }
+}
+
+/* =====================================================================
+   IDENTITÉ DOC'S PARFUMERIE — en-tête noir, logo doré
+   ===================================================================== */
+.header { background: rgba(14, 12, 10, .92); color: var(--ivory); border-bottom: 1px solid rgba(219, 165, 36, .18); }
+.header.scrolled { border-color: rgba(219, 165, 36, .3); }
+.header .icon-btn:hover { background: rgba(255, 255, 255, .08); }
+.header .burger span { background: var(--ivory); }
+.nav a::after { background: var(--gold); }
+.nav a:hover { color: var(--gold-soft); }
+.logo img { height: 50px; width: auto; filter: drop-shadow(0 2px 6px rgba(219, 165, 36, .25)); }
+.logo span { color: var(--gold-soft); line-height: 1.1; }
+.logo small { color: var(--gold); letter-spacing: .14em; font-style: italic; text-transform: none; font-size: 12px; }
+.logo .logo-full { height: auto; width: 170px; filter: none; }
+.announce { background: linear-gradient(90deg, #b07812, #dba524 50%, #b07812); color: var(--ink); font-weight: 700; }
+.announce-track span::before { color: var(--ink); }
+.hero .eyebrow { color: var(--gold-soft); letter-spacing: .12em; text-transform: none; font-size: 15px; font-style: italic; font-weight: 500; }
+.maison-visual { padding: 12%; }
+.maison-visual .maison-logo { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 30px rgba(219, 165, 36, .35)); }
+.tk-avatar:has(img) { background: var(--ink); padding: 3px; }
+.tk-avatar img { object-fit: contain; }
+@media (max-width: 1000px) {
+  .nav { background: var(--ink); border-color: rgba(219, 165, 36, .2); }
+  .nav a { border-color: rgba(255, 255, 255, .08); }
+}
+@media (max-width: 640px) {
+  .logo img { height: 42px; }
+  .logo span { font-size: 16px; white-space: nowrap; }
+}
+
+/* accueil : logo au centre, deux flacons de part et d'autre */
+.hero-visual .hb.hb-logo { width: 58%; left: 21%; top: 6%; z-index: 2; filter: drop-shadow(0 0 40px rgba(219, 165, 36, .35)); }
+.hero-visual .hb.hb-1 { width: 30%; left: 0; top: 46%; animation-delay: -2.4s; opacity: .9; }
+.hero-visual .hb.hb-2 { width: 30%; right: 0; top: 40%; animation-delay: -4.6s; opacity: .9; }
+.engagements div > span[data-ico] { grid-row: span 2; display: block; }
+
+/* choix du format dans la fiche produit */
+.formats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 4px; }
+.fmt { border: 1.5px solid var(--line); background: #fff; border-radius: 12px; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; transition: border-color .2s, box-shadow .2s; font-variant-numeric: lining-nums; }
+.fmt b { font-size: 13px; line-height: 1.2; }
+.fmt span { font-weight: 800; color: var(--gold-text); font-size: 15px; }
+.fmt small { font-size: 11.5px; color: var(--muted); }
+.fmt:hover { border-color: var(--gold-2); }
+.fmt.on { border-color: var(--ink); background: var(--ink); color: var(--ivory); box-shadow: 0 6px 18px -10px rgba(0, 0, 0, .5); }
+.fmt.on span { color: var(--gold-soft); }
+.fmt.on small { color: rgba(247, 242, 234, .6); }
+.fmt:disabled { opacity: .45; cursor: not-allowed; }
+.pp-price { font-variant-numeric: lining-nums; }
+.pp-gros { display: flex; gap: 8px; align-items: flex-start; background: #fbf3e0; border: 1px dashed var(--gold-2); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; margin: 10px 0 0; font-variant-numeric: lining-nums; }
+.pp-gros .ico { color: var(--gold-text); flex: none; margin-top: 2px; }
+.pp-gros.on { background: #e7f4ec; border-color: var(--ok); }
+.pp-gros.on .ico { color: var(--ok); }
+
+/* bandeau prix de gros dans le panier */
+.gros-banner { position: relative; overflow: hidden; display: flex; gap: 10px; align-items: center; background: #fbf3e0; border-radius: 12px; padding: 12px 14px 15px; margin: 12px 0 4px; font-size: 13.5px; font-variant-numeric: lining-nums; }
+.gros-banner .ico { color: var(--gold-text); flex: none; }
+.gros-banner i { position: absolute; left: 0; bottom: 0; height: 4px; width: var(--p); background: linear-gradient(90deg, var(--gold), var(--gold-2)); border-radius: 0 4px 4px 0; }
+.gros-banner.on { background: #e7f4ec; }
+.gros-banner.on .ico { color: var(--ok); }
+.co-summary .gros-banner { color: var(--ink); }
+.line-sub s { opacity: .6; }
+@media (max-width: 400px) { .formats { grid-template-columns: 1fr; } .fmt { flex-direction: row; justify-content: space-between; padding: 10px 14px; } }

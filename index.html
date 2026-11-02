@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Doc's Parfumerie — Parfumerie à Bouaké</title>
+  <meta name="description" content="Doc's Parfumerie by CCK : eaux de parfum et essences de parfum à prix doux, au détail et en gros. Livraison à Bouaké et partout en Côte d'Ivoire.">
+  <meta name="theme-color" content="#0b0907">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/icone.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/cards.css">
+  <link rel="stylesheet" href="assets/css/shop.css">
+</head>
+<body class="shop">
+  <!-- Bande promo -->
+  <div class="jm-topbar">
+    <div class="container jm-topbar-inner">
+      <span class="jm-topbar-left" id="announceTrack"></span>
+      <a class="jm-topbar-cta" id="topWa" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+
+  <!-- En-tête : logo, recherche, aide, panier -->
+  <header class="jm-header" id="header">
+    <div class="container jm-header-inner">
+      <button class="icon-btn jm-burger" id="burger" aria-label="Catégories"><span></span><span></span><span></span></button>
+      <a href="#" class="logo jm-logo" id="logo" aria-label="Accueil"></a>
+      <form class="jm-search" id="searchForm" role="search">
+        <span data-ico="search"></span>
+        <input type="search" id="searchInput" placeholder="Chercher un parfum, une catégorie, un format…" autocomplete="off" aria-label="Rechercher">
+        <button type="submit">Rechercher</button>
+      </form>
+      <div class="jm-actions">
+        <a class="jm-act" href="#aide" id="helpLink"><span data-ico="chat"></span><span class="jm-act-lbl">Aide</span></a>
+        <button class="jm-act jm-cart" id="cartBtn" aria-label="Panier"><span class="jm-cart-ico"><span class="cart-count" id="cartCount">0</span></span><span class="jm-act-lbl">Panier</span></button>
+      </div>
+    </div>
+    <!-- Ligne de catégories -->
+    <nav class="jm-catnav" id="nav">
+      <div class="container jm-catnav-inner" id="catNav"></div>
+    </nav>
+  </header>
+
+  <main class="jm-main">
+    <!-- Bannière + tuiles latérales -->
+    <section class="container jm-hero">
+      <div class="jm-slider" id="slider">
+        <div class="jm-slides" id="slides"></div>
+        <button class="jm-slide-btn prev" data-slide="-1" aria-label="Précédent"></button>
+        <button class="jm-slide-btn next" data-slide="1" aria-label="Suivant"></button>
+        <div class="jm-dots" id="dots"></div>
+      </div>
+      <aside class="jm-side">
+        <a class="jm-side-tile dark" id="sideWa" target="_blank" rel="noopener">
+          <span data-ico="whatsapp"></span>
+          <b>Commandez sur WhatsApp</b>
+          <small>Réponse rapide, conseils personnalisés</small>
+        </a>
+        <a class="jm-side-tile gold" href="#gros">
+          <span data-ico="box"></span>
+          <b>Prix de gros</b>
+          <small id="sideGros">Dès 10 articles dans le panier</small>
+        </a>
+        <div class="jm-side-tile light">
+          <span data-ico="truck"></span>
+          <b>Livraison</b>
+          <small>Bouaké et partout en Côte d'Ivoire</small>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Tuiles catégories -->
+    <section class="container jm-block jm-tiles-block">
+      <div class="jm-block-head dark"><h2>Nos parfums à prix doux</h2><span>Choisissez votre univers</span></div>
+      <div class="jm-tiles" id="catTiles"></div>
+    </section>
+
+    <!-- Ventes flash (promos) -->
+    <section class="container jm-block jm-band" id="promos" hidden>
+      <div class="jm-band-head">
+        <h2><span data-ico="sparkle"></span> Ventes Flash</h2>
+        <span class="jm-timer" id="flashTimer"></span>
+        <a href="#collection" data-cat-link="Promos" class="jm-more">Voir plus <span data-ico="arrow"></span></a>
+      </div>
+      <div class="rail-wrap">
+        <div class="rail jm-rail" id="promoRail"></div>
+        <button class="rail-btn prev" data-rail="promoRail" data-dir="-1" aria-label="Précédent"></button>
+        <button class="rail-btn next" data-rail="promoRail" data-dir="1" aria-label="Suivant"></button>
+      </div>
+    </section>
+
+    <!-- Les plus populaires -->
+    <section class="container jm-block jm-band jm-band-dark" id="populaires">
+      <div class="jm-band-head">
+        <h2><span data-ico="crown"></span> Les plus populaires</h2>
+        <a href="#collection" class="jm-more">Voir plus <span data-ico="arrow"></span></a>
+      </div>
+      <div class="rail-wrap">
+        <div class="rail jm-rail" id="popularRail"></div>
+        <button class="rail-btn prev" data-rail="popularRail" data-dir="-1" aria-label="Précédent"></button>
+        <button class="rail-btn next" data-rail="popularRail" data-dir="1" aria-label="Suivant"></button>
+      </div>
+    </section>
+
+    <!-- Formats & prix -->
+    <section class="container jm-block" id="formats">
+      <div class="jm-block-head"><h2>Formats &amp; prix</h2><span>Chaque parfum existe en 3 formats</span></div>
+      <div class="jm-formats" id="formatGrid"></div>
+    </section>
+
+    <!-- Prix de gros -->
+    <section class="container jm-gros" id="gros">
+      <div class="jm-gros-inner">
+        <div>
+          <p class="jm-gros-kicker">Revendeurs &amp; grossistes</p>
+          <h2>Le prix de gros s'applique <em>tout seul</em></h2>
+          <p id="proText">Dès 10 articles dans votre panier, tous parfums confondus, le prix de gros s'applique sur toute la commande.</p>
+        </div>
+        <div class="jm-gros-cta">
+          <a href="#collection" class="jm-btn jm-btn-dark">Composer ma commande <span data-ico="arrow"></span></a>
+          <a class="jm-btn jm-btn-line" id="proWa" target="_blank" rel="noopener"><span data-ico="whatsapp"></span> Parler à la boutique</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalogue avec filtres -->
+    <section class="container jm-catalog" id="collection">
+      <aside class="jm-filters">
+        <h3>Catégories</h3>
+        <div class="chips" id="chips" role="tablist"></div>
+      </aside>
+      <div class="jm-catalog-main">
+        <div class="jm-catalog-head">
+          <div><h2>Tous nos parfums</h2><span id="resultCount"></span></div>
+          <label class="jm-sort">Trier par
+            <select id="sortSelect" aria-label="Trier">
+              <option value="new">Nouveautés</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+              <option value="promo">Promotions d'abord</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid jm-grid" id="grid"></div>
+        <p class="empty" id="emptyGrid" hidden>Aucun parfum ne correspond à votre recherche.</p>
+      </div>
+    </section>
+
+    <!-- Client de la semaine -->
+    <section class="container jm-block jm-best" id="client-semaine">
+      <div class="best-wrap">
+        <div class="best-intro">
+          <p class="jm-gros-kicker">Fidélité</p>
+          <h2>Client(e) de la semaine</h2>
+          <p class="section-sub" id="bestSub">Chaque semaine, nous mettons à l'honneur nos clients les plus fidèles.</p>
+          <p class="best-reward" id="bestReward"></p>
+        </div>
+        <div class="podium" id="podium"></div>
+      </div>
+    </section>
+
+    <!-- Garanties -->
+    <section class="container jm-trust" id="aide">
+      <div><span data-ico="sparkle"></span><b>Conçus par nos soins</b><small>Eaux de parfum &amp; essences by CCK</small></div>
+      <div><span data-ico="truck"></span><b>Livraison rapide</b><small>Bouaké et toute la Côte d'Ivoire</small></div>
+      <div><span data-ico="cash"></span><b>Paiement à la livraison</b><small>Espèces ou mobile money</small></div>
+      <div><span data-ico="whatsapp"></span><b>Service client</b><small id="trustPhone"></small></div>
+    </section>
+  </main>
+
+  <footer class="footer jm-footer" id="contact">
+    <div class="container jm-footer-top">
+      <div class="logo logo-light" id="footerLogo"></div>
+      <div class="lx-social-links" id="socialBig"></div>
+    </div>
+    <div class="container footer-grid">
+      <div>
+        <h4>Doc's Parfumerie</h4>
+        <p class="footer-tag" id="footerTag"></p>
+        <div class="socials" id="socials"></div>
+      </div>
+      <div>
+        <h4>Commander</h4>
+        <p id="deliveryInfo"></p>
+        <p>Paiement à la livraison <span id="waveMention"></span></p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p><a id="footerWa" target="_blank" rel="noopener"></a></p>
+        <p id="footerAddress"></p>
+        <p id="footerEmail"></p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> <span id="footerName"></span> by CCK. Tous droits réservés.</span>
+      <a href="admin.html" class="admin-link">Espace gérante</a>
+    </div>
+  </footer>
+
+  <!-- Fiche produit -->
+  <div class="modal" id="productModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel product-panel" id="productPanel"></div>
+  </div>
+
+  <!-- Panier -->
+  <div class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <aside class="drawer-panel">
+      <div class="drawer-head">
+        <h3>Votre panier</h3>
+        <button class="icon-btn" data-close aria-label="Fermer" data-ico="x"></button>
+      </div>
+      <div class="drawer-body" id="cartBody"></div>
+      <div class="drawer-foot" id="cartFoot"></div>
+    </aside>
+  </div>
+
+  <!-- Commande -->
+  <div class="modal" id="checkoutModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel checkout-panel" id="checkoutPanel"></div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script>
+    // Charge Supabase uniquement si la boutique est configurée
+    if (window.APP_CONFIG.supabase.url) document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"><\/script>');
+  </script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/logo.js"></script>
+  <script src="assets/js/catalogue.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
