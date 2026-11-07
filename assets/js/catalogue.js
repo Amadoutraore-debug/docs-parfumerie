@@ -9,7 +9,7 @@ window.CATALOGUE = (function () {
     { id: "edp30", label: "Eau de parfum 30 ml", volume_ml: 30, price: 3500, wholesale_price: 3000, stock: 500 },
     { id: "edp50", label: "Eau de parfum 50 ml", volume_ml: 50, price: 5000, wholesale_price: 4500, stock: 500 },
   ];
-  const DESC = "Eau de parfum et essence de parfum conçues par Doc's Parfumerie CCK by Suzy 🇨🇮.";
+  const DESC = "Doc’s parfumerie by CCK";
   const P = (slug, name, category, color) => ({
     slug, name, category, color, brand: "", description: DESC,
     notes_top: "", notes_heart: "", notes_base: "",
