@@ -39,7 +39,7 @@
     const B = CFG.brand;
     document.title = `${B.name} — Parfumerie à ${B.city}`;
     $("#logo").innerHTML = brandHTML();
-    $("#footerLogo").innerHTML = brandHTML(true);
+    $("#footerLogo").innerHTML = brandHTML();
     $("#footerName").textContent = B.name;
     $("#footerTag").textContent = B.tagline;
     $("#year").textContent = new Date().getFullYear();
@@ -47,122 +47,119 @@
     $("#waveMention").textContent = CFG.wave.enabled ? "ou par Wave." : ".";
     const wa = waLink(`Bonjour ${B.name} ! J'aimerais un conseil parfum.`);
     $("#proWa").href = waLink(`Bonjour ${B.name} ! Je souhaite commander en gros.`);
-    $("#sideWa").href = wa;
-    $("#topWa").href = wa; $("#topWa").innerHTML = `${icon("whatsapp", 15)} ${esc(CFG.phoneDisplay)}`;
-    $("#trustPhone").textContent = CFG.phoneDisplay;
+    $("#newsWa").href = waLink(`Bonjour ${B.name} ! Je souhaite recevoir vos nouveautés et vos promos.`);
+    $("#headWa").href = wa; $("#headWa").innerHTML = `${icon("whatsapp", 16)}<span>${esc(CFG.phoneDisplay)}</span>`;
+    $("#perkPhone").textContent = CFG.phoneDisplay;
     $("#footerWa").href = wa; $("#footerWa").innerHTML = `${icon("whatsapp", 16)} ${esc(CFG.phoneDisplay)}`;
     $("#footerAddress").innerHTML = B.address ? `${icon("pin", 16)} ${esc(B.address)}` : "";
     $("#footerEmail").innerHTML = CFG.email ? `<a href="mailto:${esc(CFG.email)}">${esc(CFG.email)}</a>` : "";
     $("#socials").innerHTML = Object.entries(CFG.socials).filter(([, v]) => v)
       .map(([k, v]) => `<a href="${esc(v)}" target="_blank" rel="noopener" aria-label="${k}">${icon(k, 18)}</a>`).join("");
-    const SOC = { instagram: ["Instagram", "doc.s_parfumerie"], tiktok: ["TikTok", "doc_sparfumerie"], facebook: ["Facebook", "doc's parfumerie"] };
-    $("#socialBig").innerHTML = Object.entries(CFG.socials).filter(([, v]) => v)
-      .map(([k, v]) => `<a href="${esc(v)}" target="_blank" rel="noopener">${icon(k, 24)}<span><b>${SOC[k] ? SOC[k][0] : k}</b><small>${SOC[k] ? esc(SOC[k][1]) : ""}</small></span></a>`).join("");
     $("#bestReward").innerHTML = `${icon("sparkle", 18)}<span>${esc(CFG.bestCustomerReward)}</span>`;
     if (!CFG.showBestCustomers) $("#client-semaine").remove();
-    $$("[data-ico]").forEach((el) => { el.insertAdjacentHTML("afterbegin", icon(el.dataset.ico, el.classList.contains("icon-btn") ? 22 : 18)); });
-    $(".jm-cart-ico").insertAdjacentHTML("afterbegin", icon("bag", 24));
-    $$(".jm-slide-btn.prev").forEach((b) => (b.innerHTML = icon("chevronL", 22)));
-    $$(".jm-slide-btn.next").forEach((b) => (b.innerHTML = icon("chevronR", 22)));
-    const msgs = [
-      `${icon("truck", 15)} Livraison à Bouaké et partout en Côte d'Ivoire`,
-      `${icon("box", 15)} Prix de gros automatique dès ${CFG.wholesaleMinQty || 10} articles`,
-      `${icon("cash", 15)} ${CFG.wave.enabled ? "Paiement à la livraison ou par Wave" : "Paiement à la livraison"}`,
-    ];
-    $("#announceTrack").innerHTML = msgs.map((m) => `<span>${m}</span>`).join("");
+    $$("[data-ico]").forEach((el) => { el.insertAdjacentHTML("afterbegin", icon(el.dataset.ico, el.classList.contains("icon-btn") ? 22 : 22)); });
+    $("#searchBtn").innerHTML = icon("search", 21);
+    $("#cartBtn").insertAdjacentHTML("afterbegin", icon("bag", 21));
   }
 
-  // ------------------------------------------------------------ accueil (style boutique en ligne)
-  const CAT_ICONS = { Homme: "user", Femme: "sparkle", Mixte: "heart", Coffrets: "box" };
-  function renderCatNav() {
-    const cats = CFG.categories.filter((c) => state.products.some((p) => p.category === c));
-    const items = [["Tous", "grid", "Tous les parfums"], ...cats.map((c) => [c, CAT_ICONS[c] || "tag", c])];
-    if (state.products.some(promoActive)) items.push(["Promos", "tag", "Promos"]);
-    $("#catNav").innerHTML = items.map(([k, ic, l]) => `<button class="jm-catlink ${state.filter === k ? "on" : ""}" data-cat="${esc(k)}" data-scroll="1">${icon(ic, 17)}${esc(l)}</button>`).join("")
-      + `<a class="jm-catlink" href="#formats">${icon("flask", 17)}Formats &amp; prix</a><a class="jm-catlink" href="#gros">${icon("box", 17)}Prix de gros</a>`
-      + (CFG.showBestCustomers ? `<a class="jm-catlink" href="#client-semaine">${icon("crown", 17)}Client de la semaine</a>` : "");
-  }
+  // ------------------------------------------------------------ vitrine
+  const cut = (p) => (p && (p.cutout_url || p.image_url)) || "";
+  const findP = (re, fallbackIdx = 0) => state.products.find((p) => re.test(p.name)) || state.products[fallbackIdx];
+  const lastWord = (n) => n.replace(/[’']/g, " ").trim().split(/\s+/).pop().toUpperCase();
 
+  // 1. Bannière principale : un parfum à la fois, nom en grand + mot géant en filigrane
   let slideIdx = 0, slideTimer;
+  function heroList() { return [...state.products].filter((p) => cut(p)).sort((a, b) => b.featured - a.featured).slice(0, 5); }
   function renderHero() {
-    const imgs = state.products.filter((p) => p.image_url);
-    const pick = (i) => imgs[i % Math.max(imgs.length, 1)];
-    const min = wholesaleMin(), from = state.products.length ? Math.min(...state.products.map(unitPrice)) : 0;
-    const shot = (p, cls = "") => p ? `<img class="${cls}" src="${esc(p.image_url)}" alt="${esc(p.name)}">` : "";
-    const slides = [
-      { cls: "s1", kicker: "Nouvelle collection by CCK", title: `Marquez votre <em>présence</em>`, text: "Eaux de parfum et essences conçues à Bouaké.",
-        price: `Dès <b>${fmt(from)}</b>`, cta: "J'achète", href: "#collection", art: `<div class="jm-art trio">${shot(pick(1), "b1")}${shot(pick(0), "b2")}${shot(pick(2), "b3")}</div>` },
-      { cls: "s2", kicker: "Revendeurs & grossistes", title: `Prix de <em>gros</em> automatique`, text: min ? `Dès ${min} articles dans le panier, sur toute la commande.` : "Contactez-nous pour vos achats en quantité.",
-        price: `Jusqu'à <b>−20 %</b>`, cta: "Commander en gros", href: "#gros", art: `<div class="jm-art duo">${shot(pick(3), "b1")}${shot(pick(5), "b2")}</div>` },
-      { cls: "s3", kicker: "Le format préféré", title: `Eau de parfum <em>50 ml</em>`, text: "Le sillage qui dure, au prix le plus doux.",
-        price: `<b>${fmt(5000)}</b>`, cta: "Choisir mon parfum", href: "#collection", art: `<div class="jm-art solo">${shot(pick(6), "b1")}</div>` },
-    ];
-    $("#slides").innerHTML = slides.map((sl, i) => `
-      <div class="jm-slide ${sl.cls} ${i === slideIdx ? "on" : ""}" aria-hidden="${i !== slideIdx}">
-        <div class="jm-slide-text">
-          <span class="jm-slide-kicker">${esc(sl.kicker)}</span>
-          <h2>${sl.title}</h2>
-          <p>${esc(sl.text)}</p>
-          <div class="jm-slide-price">${sl.price}</div>
-          <a href="${sl.href}" class="jm-btn jm-btn-gold">${esc(sl.cta)} ${icon("arrow", 16)}</a>
+    const list = heroList();
+    if (!list.length) return;
+    slideIdx = slideIdx % list.length;
+    $("#hero").innerHTML = list.map((p, i) => {
+      const words = p.name.split(" ");
+      const first = words.length > 1 ? words.slice(0, -1).join(" ") : "Eau de parfum";
+      const big = words.length > 1 ? words[words.length - 1] : p.name;
+      return `
+      <article class="vt-slide ${i === slideIdx ? "on" : ""}" aria-hidden="${i !== slideIdx}">
+        <span class="vt-ghost" aria-hidden="true">${esc(lastWord(p.name))}</span>
+        <div class="vt-slide-text">
+          <p class="vt-small-label">${esc(first)}</p>
+          <h1>${esc(big)}</h1>
+          <p class="vt-slide-cat">${esc(p.category)} · by CCK</p>
+          <button class="vt-btn vt-btn-gold" data-open-btn="${p.id}">Voir le parfum</button>
         </div>
-        ${sl.art}
-      </div>`).join("");
-    $("#dots").innerHTML = slides.map((_, i) => `<button class="${i === slideIdx ? "on" : ""}" data-dot="${i}" aria-label="Bannière ${i + 1}"></button>`).join("");
-    clearInterval(slideTimer); slideTimer = setInterval(() => goSlide(slideIdx + 1), 5500);
-    if (min) $("#sideGros").textContent = `Dès ${min} articles dans le panier`;
-    renderTiles();
-    renderCatNav();
-    renderFormats();
+        <div class="vt-slide-img"><img src="${esc(cut(p))}" alt="${esc(p.name)}"></div>
+        <div class="vt-slide-desc">
+          <b>Description</b>
+          <p>Eau de parfum 30 ml ou 50 ml, ou essence de parfum. Dès <b>${fmt(unitPrice(p))}</b>, prix de gros dès ${wholesaleMin() || 10} articles.</p>
+        </div>
+      </article>`;
+    }).join("") + `<div class="vt-dots">${list.map((_, i) => `<button class="${i === slideIdx ? "on" : ""}" data-dot="${i}" aria-label="Parfum ${i + 1}"></button>`).join("")}</div>`;
+    clearInterval(slideTimer); slideTimer = setInterval(() => goSlide(slideIdx + 1), 6000);
+    renderBento();
+    renderBanners();
+    renderNews();
+    $("#logoStrip").innerHTML = state.products.map((p) => `<span>${esc(p.name)}</span>`).join("");
+    const min = wholesaleMin();
+    if (min) { $("#perkGros").textContent = `Dès ${min} articles dans le panier`; $("#grosSmall").textContent = `dès ${min} articles`; }
   }
   function goSlide(i) {
-    const n = $$(".jm-slide").length; if (!n) return;
+    const n = $$(".vt-slide").length; if (!n) return;
     slideIdx = (i + n) % n;
-    $$(".jm-slide").forEach((el, k) => { el.classList.toggle("on", k === slideIdx); el.setAttribute("aria-hidden", k !== slideIdx); });
-    $$("#dots button").forEach((el, k) => el.classList.toggle("on", k === slideIdx));
+    $$(".vt-slide").forEach((el, k) => { el.classList.toggle("on", k === slideIdx); el.setAttribute("aria-hidden", k !== slideIdx); });
+    $$(".vt-dots button").forEach((el, k) => el.classList.toggle("on", k === slideIdx));
   }
 
-  function renderTiles() {
-    const cats = CFG.categories.filter((c) => state.products.some((p) => p.category === c));
-    const tiles = cats.map((c) => ({ key: c, label: c, p: state.products.find((p) => p.category === c && p.image_url), n: state.products.filter((p) => p.category === c).length }));
-    const promos = state.products.filter(promoActive);
-    if (promos.length) tiles.push({ key: "Promos", label: "Promos", p: promos[0], n: promos.length });
-    tiles.push({ key: "Tous", label: "Toute la collection", p: state.products.find((p) => p.image_url && !tiles.some((t) => t.p === p)) || state.products[0], n: state.products.length });
-    $("#catTiles").innerHTML = tiles.map((t) => `
-      <button class="jm-tile" data-cat="${esc(t.key)}" data-scroll="1">
-        <span class="jm-tile-name">${esc(t.label)}</span>
-        <span class="jm-tile-img">${t.p ? productVisual(t.p) : ""}</span>
-        <span class="jm-tile-cta">${t.n} parfum${t.n > 1 ? "s" : ""} · Découvrir</span>
+  // 2. Tuiles « bento » : chaque tuile a sa couleur, un mot en filigrane et un flacon
+  function renderBento() {
+    const byCat = (c) => state.products.find((p) => p.category === c);
+    const tiles = [
+      { cls: "t-noir", label: "Pour lui", title: "Homme", ghost: "HOMME", p: findP(/diesel/i) || byCat("Homme"), act: `data-cat="Homme" data-scroll="1"` },
+      { cls: "t-or", label: "Pour elle", title: "Femme", ghost: "FEMME", p: byCat("Femme"), act: `data-cat="Femme" data-scroll="1"` },
+      { cls: "t-brun wide", label: "Unisexe", title: "Mixte", ghost: "MIXTE", p: byCat("Mixte"), act: `data-cat="Mixte" data-scroll="1"` },
+      { cls: "t-gris wide", label: "Revendeurs", title: "Prix de gros", ghost: "GROS", p: findP(/terre/i, 3), act: `data-go="#gros"` },
+      { cls: "t-rose", label: "Coup de cœur", title: "Sucre Rose", ghost: "ROSE", p: findP(/sucre/i, 1), open: true },
+      { cls: "t-bleu", label: "Nouveauté", title: "Pi Givenchy", ghost: "BLUE", p: findP(/givenchy/i, 2), open: true },
+    ].filter((t) => t.p);
+    $("#bento").innerHTML = tiles.map((t) => `
+      <button class="vt-tile ${t.cls}" ${t.open ? `data-open-btn="${t.p.id}"` : t.act}>
+        <span class="vt-tile-ghost" aria-hidden="true">${esc(t.ghost)}</span>
+        <span class="vt-tile-text">
+          <small>${esc(t.label)}</small>
+          <b>${esc(t.open ? t.p.name : t.title)}</b>
+          <span class="vt-pill">${t.open ? `Dès ${fmt(unitPrice(t.p))}` : "Découvrir"}</span>
+        </span>
+        <img src="${esc(cut(t.p))}" alt="" loading="lazy">
       </button>`).join("");
   }
 
-  // Les formats proposés (repris du catalogue) avec prix détail / gros
-  function renderFormats() {
+  // 4 & 6. Bannières pleine largeur avec un flacon qui déborde
+  function renderBanners() {
+    const b1 = findP(/givenchy/i, 2), b2 = findP(/elixir|million/i, 5);
+    if (b1) $("#bannerImg1").innerHTML = `<img src="${esc(cut(b1))}" alt="${esc(b1.name)}" loading="lazy">`;
+    if (b2) $("#bannerImg2").innerHTML = `<img src="${esc(cut(b2))}" alt="${esc(b2.name)}" loading="lazy">`;
     const map = new Map();
     state.products.forEach((p) => variantsOf(p).forEach((v) => { if (!map.has(v.id)) map.set(v.id, v); }));
-    const list = [...map.values()].sort((a, b) => a.price - b.price).slice(0, 4);
     const min = wholesaleMin();
-    const art = (i) => {
-      const h = [60, 84, 104][i] || 96, w = [38, 52, 66][i] || 56;
-      return `<svg viewBox="0 0 110 130" class="jm-fmt-art" aria-hidden="true"><defs><linearGradient id="fg${i}" x1="0" x2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#e2ad2e"/><stop offset="1" stop-color="#9a6410"/></linearGradient></defs>
-        <rect x="${55 - 8}" y="${124 - h - 24}" width="16" height="13" rx="2" fill="#0b0907"/><rect x="${55 - 12}" y="${124 - h - 11}" width="24" height="8" rx="2" fill="url(#fg${i})"/>
-        <rect x="${55 - w / 2}" y="${124 - h}" width="${w}" height="${h}" rx="${i ? 9 : 14}" fill="#fff" stroke="#0b0907" stroke-width="2.5"/>
-        <rect x="${55 - w / 2 + 5}" y="${124 - h * .58}" width="${w - 10}" height="${h * .58 - 5}" rx="5" fill="url(#fg${i})"/></svg>`;
-    };
-    $("#formatGrid").innerHTML = list.map((v, i) => {
-      const pct = +v.wholesale_price > 0 ? Math.round((1 - v.wholesale_price / v.price) * 100) : 0;
-      return `
-      <article class="jm-fmt ${i === 1 ? "is-star" : ""}">
-        ${art(i)}
-        <div class="jm-fmt-body">
-          <h3>${esc(v.label)}</h3>
-          <p class="jm-fmt-price">${fmt(v.price)} <small>au détail</small></p>
-          ${pct && min ? `<p class="jm-fmt-gros"><b>${fmt(v.wholesale_price)}</b> en gros <span class="jm-badge">−${pct}%</span></p>` : ""}
-          <a href="#collection" class="jm-link">Choisir un parfum ${icon("arrow", 14)}</a>
-        </div>
-      </article>`;
-    }).join("");
-    if (min) $("#proText").innerHTML = `Dès <b>${min} articles</b> dans votre panier, tous parfums et formats confondus, le prix de gros s'applique automatiquement sur toute la commande. Idéal pour les revendeurs, les boutiques et les cadeaux en nombre.`;
+    $("#formatGrid").innerHTML = [...map.values()].sort((a, b) => a.price - b.price).slice(0, 4).map((v) =>
+      `<li><span>${esc(v.label)}</span><b>${fmt(v.price)}</b>${+v.wholesale_price > 0 && min ? `<small>${fmt(v.wholesale_price)} en gros</small>` : ""}</li>`).join("");
+    if (min) $("#proText").innerHTML = `Dès <b>${min} articles</b> dans votre panier, tous parfums et formats confondus, le prix de gros s'applique tout seul sur toute la commande. Idéal pour les revendeurs et les cadeaux en nombre.`;
+  }
+
+  // 7. Conseils (contenu utile, pas d'articles fictifs)
+  function renderNews() {
+    const pics = [findP(/tobacco/i, 0), findP(/allure/i, 4), findP(/sucre/i, 1)];
+    const tips = [
+      ["Bien porter son parfum", "Faire tenir son parfum toute la journée", "Vaporisez sur les points de pulsation (poignets, cou, derrière les oreilles) juste après la douche, sur une peau hydratée. Ne frottez pas : cela casse les notes."],
+      ["Choisir son format", "Essence ou eau de parfum : que choisir ?", "L'essence se pose en touches et dure longtemps, idéale pour un petit budget. L'eau de parfum se vaporise et diffuse un sillage plus large : 30 ml pour découvrir, 50 ml pour adopter."],
+      ["Offrir un parfum", "Nos idées pour faire plaisir", "En cas de doute, choisissez une senteur douce et polyvalente comme Sucre Rose ou Tobacco Vanille. Écrivez-nous sur WhatsApp : on vous conseille selon la personne et l'occasion."],
+    ];
+    $("#news").innerHTML = tips.map(([cat, title, txt], i) => `
+      <article class="vt-news-card">
+        <div class="vt-news-img n${i + 1}">${pics[i] ? `<img src="${esc(cut(pics[i]))}" alt="" loading="lazy">` : ""}</div>
+        <small>${esc(cat)}</small>
+        <h3>${esc(title)}</h3>
+        <p>${esc(txt)}</p>
+      </article>`).join("");
   }
 
   // ------------------------------------------------------------ carrousels
@@ -173,7 +170,7 @@
     return [...list, ...rest].slice(0, 8);
   }
   function renderRails() {
-    $("#popularRail").innerHTML = popular().map(cardHTML).join("");
+    const pr = $("#popularRail"); if (pr) pr.innerHTML = popular().map(cardHTML).join("");
     const promos = state.products.filter(promoActive);
     $("#promos").hidden = !promos.length;
     $("#promoRail").innerHTML = promos.map(cardHTML).join("");
@@ -242,27 +239,23 @@
     return `<p class="tk-line tk-stock ${cls}">${icon("box", 17)}<span>${txt}</span></p>`;
   }
 
-  // Carte produit compacte (style boutique en ligne)
+  // Carte produit : flacon détouré sur fond gris clair, nom, prix
   function cardHTML(p) {
     const out = p.stock <= 0, a = available(p), promo = promoActive(p), vs = variantsOf(p), multi = vs.length > 1;
-    const stockTxt = out ? "Épuisé" : a <= CFG.lowStockThreshold ? `Plus que ${a}` : `${a.toLocaleString("fr-FR")} articles en stock`;
     const add = out || a <= 0 ? "" : multi ? `data-open-btn="${p.id}"` : `data-add="${p.id}" data-vid="${vs[0].id}"`;
+    const low = !out && a <= CFG.lowStockThreshold;
     return `
-      <article class="jm-card ${out ? "out" : ""}" data-open="${p.id}">
-        <div class="jm-img">
-          ${p.image_url ? `<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy">` : bottleSVG(p)}
-          ${promo ? `<span class="jm-disc">−${discount(p)}%</span>` : ""}
-          <button class="jm-fav ${state.favs.has(p.id) ? "on" : ""}" data-fav="${p.id}" aria-label="Favori">${icon("heart", 18)}</button>
-          ${add ? `<button class="jm-plus" ${add} aria-label="Ajouter au panier">${icon("plus", 20)}</button>` : ""}
-          ${out ? `<span class="jm-out">Épuisé</span>` : ""}
+      <article class="vt-card ${out ? "out" : ""}" data-open="${p.id}">
+        <div class="vt-card-img">
+          ${cut(p) ? `<img src="${esc(cut(p))}" alt="${esc(p.name)}" loading="lazy">` : bottleSVG(p)}
+          ${promo ? `<span class="vt-sale">−${discount(p)}%</span>` : out ? `<span class="vt-sale gris">Épuisé</span>` : low ? `<span class="vt-sale">Derniers</span>` : ""}
+          <button class="vt-fav ${state.favs.has(p.id) ? "on" : ""}" data-fav="${p.id}" aria-label="Favori">${icon("heart", 17)}</button>
+          ${add ? `<button class="vt-add" ${add}>${icon("bag", 16)} ${multi ? "Choisir le format" : "Ajouter"}</button>` : ""}
         </div>
-        <div class="jm-info">
-          <span class="jm-stock ${!out && a <= CFG.lowStockThreshold ? "low" : ""} ${out ? "none" : ""}">${stockTxt}</span>
-          <h3 class="jm-name" title="${esc(p.name)}">${esc(p.name)}</h3>
-          <p class="jm-meta">${esc(p.category)} · ${esc(vs.map(fmtShort).join(", "))}</p>
-          <div class="jm-price">${multi ? "<small>dès</small> " : ""}${fmt(unitPrice(p))}</div>
-          ${promo ? `<div class="jm-old"><s>${fmt(p.price)}</s><span class="jm-badge">−${discount(p)}%</span></div>` : `<div class="jm-old jm-gros-hint">${+vs[0].wholesale_price > 0 && wholesaleMin() ? `Gros : ${fmt(Math.min(...vs.filter((v) => +v.wholesale_price > 0).map((v) => +v.wholesale_price)))}` : "&nbsp;"}</div>`}
-          <button class="jm-cta" ${add} ${add ? "" : "disabled"}>${out ? "Épuisé" : multi ? "Choisir le format" : "Ajouter au panier"}</button>
+        <div class="vt-card-body">
+          <h3>${esc(p.name)}</h3>
+          <p class="vt-card-meta">${esc(p.category)} · ${esc(vs.map(fmtShort).join(" · "))}</p>
+          <p class="vt-card-price">${promo ? `<s>${fmt(p.price)}</s>` : ""}<b>${multi ? "<small>dès</small> " : ""}${fmt(unitPrice(p))}</b></p>
         </div>
       </article>`;
   }
@@ -287,7 +280,7 @@
     $("#grid").innerHTML = list.map(cardHTML).join("");
     $("#emptyGrid").hidden = list.length > 0;
     $("#resultCount").textContent = `${list.length} parfum${list.length > 1 ? "s" : ""}${state.query ? ` pour « ${state.query} »` : ""}`;
-    $$(".jm-catlink[data-cat]").forEach((b) => b.classList.toggle("on", b.dataset.cat === state.filter));
+
     tickTimers();
   }
 
@@ -594,7 +587,7 @@
         if (t.dataset.scroll) { $("#collection").scrollIntoView(); $("#nav").classList.remove("open"); }
         return;
       }
-      if (t.dataset.slide) { goSlide(slideIdx + +t.dataset.slide); clearInterval(slideTimer); return; }
+      if (t.dataset.go) { $(t.dataset.go).scrollIntoView(); return; }
       if (t.dataset.dot) { goSlide(+t.dataset.dot); clearInterval(slideTimer); return; }
       if (t.hasAttribute("data-go-cart")) { closeLayer("#productModal"); openLayer("#cartDrawer"); return; }
       if (t.id === "toCheckout") { closeLayer("#cartDrawer"); renderCheckout(); openLayer("#checkoutModal"); return; }
@@ -615,7 +608,7 @@
     $$(".rail-btn.next").forEach((b) => (b.innerHTML = icon("chevronR", 22)));
     window.addEventListener("resize", () => $$(".rail").forEach(updateRailBtns));
     let st; $("#searchInput").addEventListener("input", (e) => { clearTimeout(st); st = setTimeout(() => { state.query = e.target.value; renderGrid(); }, 150); });
-    $("#searchForm").addEventListener("submit", (e) => { e.preventDefault(); state.query = $("#searchInput").value; renderGrid(); $("#collection").scrollIntoView(); });
+    $("#searchBtn").addEventListener("click", () => { $("#collection").scrollIntoView(); setTimeout(() => $("#searchInput").focus(), 450); });
     $("#sortSelect").addEventListener("change", (e) => { state.sort = e.target.value; renderGrid(); });
     $("#burger").addEventListener("click", () => { $("#nav").classList.toggle("open"); $("#burger").classList.toggle("open"); });
     $("#nav").addEventListener("click", (e) => { if (e.target.closest("a")) { $("#nav").classList.remove("open"); $("#burger").classList.remove("open"); } });

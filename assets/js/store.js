@@ -9,7 +9,7 @@
   const live = !!(CFG.supabase && CFG.supabase.url && CFG.supabase.anonKey && window.supabase);
 
   // ------------------------------------------------------------------ DÉMO
-  const DEMO_KEY = "parfumerie_demo_v2";
+  const DEMO_KEY = "parfumerie_demo_v3";
   const DEMO_PASSWORD = "demo1234";
   const rid = () => (crypto.randomUUID ? crypto.randomUUID() : "id-" + Math.random().toString(36).slice(2));
   const daysFromNow = (d) => new Date(Date.now() + d * 86400000).toISOString();

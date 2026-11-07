@@ -61,6 +61,8 @@ create table if not exists public.products (
   active       boolean default true,
   created_at   timestamptz default now()
 );
+-- photo détourée (fond transparent) pour les bannières
+alter table public.products add column if not exists cutout_url text;
 alter table public.products enable row level security;
 
 drop policy if exists "produits visibles" on public.products;

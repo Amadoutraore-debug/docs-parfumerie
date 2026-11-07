@@ -5,194 +5,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Doc's Parfumerie — Parfumerie à Bouaké</title>
   <meta name="description" content="Doc's Parfumerie by CCK : eaux de parfum et essences de parfum à prix doux, au détail et en gros. Livraison à Bouaké et partout en Côte d'Ivoire.">
-  <meta name="theme-color" content="#0b0907">
+  <meta name="theme-color" content="#111111">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/icone.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,800;0,900;1,700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/cards.css">
-  <link rel="stylesheet" href="assets/css/shop.css">
+  <link rel="stylesheet" href="assets/css/vitrine.css">
 </head>
-<body class="shop">
-  <!-- Bande promo -->
-  <div class="jm-topbar">
-    <div class="container jm-topbar-inner">
-      <span class="jm-topbar-left" id="announceTrack"></span>
-      <a class="jm-topbar-cta" id="topWa" target="_blank" rel="noopener"></a>
-    </div>
-  </div>
-
-  <!-- En-tête : logo, recherche, aide, panier -->
-  <header class="jm-header" id="header">
-    <div class="container jm-header-inner">
-      <button class="icon-btn jm-burger" id="burger" aria-label="Catégories"><span></span><span></span><span></span></button>
-      <a href="#" class="logo jm-logo" id="logo" aria-label="Accueil"></a>
-      <form class="jm-search" id="searchForm" role="search">
-        <span data-ico="search"></span>
-        <input type="search" id="searchInput" placeholder="Chercher un parfum, une catégorie, un format…" autocomplete="off" aria-label="Rechercher">
-        <button type="submit">Rechercher</button>
-      </form>
-      <div class="jm-actions">
-        <a class="jm-act" href="#aide" id="helpLink"><span data-ico="chat"></span><span class="jm-act-lbl">Aide</span></a>
-        <button class="jm-act jm-cart" id="cartBtn" aria-label="Panier"><span class="jm-cart-ico"><span class="cart-count" id="cartCount">0</span></span><span class="jm-act-lbl">Panier</span></button>
+<body class="vt">
+  <!-- En-tête -->
+  <header class="vt-header" id="header">
+    <div class="container vt-header-inner">
+      <a href="#" class="logo vt-logo" id="logo" aria-label="Accueil"></a>
+      <nav class="vt-nav" id="nav">
+        <a href="#accueil" class="on">Accueil</a>
+        <a href="#collection">Parfums</a>
+        <a href="#formats">Formats &amp; prix</a>
+        <a href="#gros">Prix de gros</a>
+        <a href="#conseils">Conseils</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="vt-actions">
+        <a class="vt-wa" id="headWa" target="_blank" rel="noopener"></a>
+        <button class="icon-btn" id="searchBtn" aria-label="Rechercher"></button>
+        <button class="icon-btn vt-cart" id="cartBtn" aria-label="Panier"><span class="cart-count" id="cartCount">0</span></button>
+        <button class="icon-btn vt-burger" id="burger" aria-label="Menu"><span></span><span></span></button>
       </div>
     </div>
-    <!-- Ligne de catégories -->
-    <nav class="jm-catnav" id="nav">
-      <div class="container jm-catnav-inner" id="catNav"></div>
-    </nav>
   </header>
 
-  <main class="jm-main">
-    <!-- Bannière + tuiles latérales -->
-    <section class="container jm-hero">
-      <div class="jm-slider" id="slider">
-        <div class="jm-slides" id="slides"></div>
-        <button class="jm-slide-btn prev" data-slide="-1" aria-label="Précédent"></button>
-        <button class="jm-slide-btn next" data-slide="1" aria-label="Suivant"></button>
-        <div class="jm-dots" id="dots"></div>
-      </div>
-      <aside class="jm-side">
-        <a class="jm-side-tile dark" id="sideWa" target="_blank" rel="noopener">
-          <span data-ico="whatsapp"></span>
-          <b>Commandez sur WhatsApp</b>
-          <small>Réponse rapide, conseils personnalisés</small>
-        </a>
-        <a class="jm-side-tile gold" href="#gros">
-          <span data-ico="box"></span>
-          <b>Prix de gros</b>
-          <small id="sideGros">Dès 10 articles dans le panier</small>
-        </a>
-        <div class="jm-side-tile light">
-          <span data-ico="truck"></span>
-          <b>Livraison</b>
-          <small>Bouaké et partout en Côte d'Ivoire</small>
+  <main>
+    <!-- 1. Bannière principale : nom du parfum + mot géant en filigrane -->
+    <section class="container vt-hero-wrap" id="accueil">
+      <div class="vt-hero" id="hero"></div>
+    </section>
+
+    <!-- 2. Tuiles catégories (grille « bento ») -->
+    <section class="container vt-bento" id="bento"></section>
+
+    <!-- 3. Garanties -->
+    <section class="container vt-perks">
+      <div><span data-ico="truck"></span><p><b>Livraison rapide</b><small>Bouaké et toute la Côte d'Ivoire</small></p></div>
+      <div><span data-ico="box"></span><p><b>Prix de gros</b><small id="perkGros">Dès 10 articles dans le panier</small></p></div>
+      <div><span data-ico="chat"></span><p><b>Conseil WhatsApp</b><small id="perkPhone"></small></p></div>
+      <div><span data-ico="cash"></span><p><b>Paiement à la livraison</b><small>Espèces ou mobile money</small></p></div>
+    </section>
+
+    <!-- 4. Bannière promo noire (le flacon déborde) -->
+    <section class="container vt-banner vt-banner-dark" id="gros">
+      <div class="vt-banner-inner">
+        <div class="vt-banner-big"><span class="vt-banner-kicker">Revendeurs &amp; grossistes</span><strong>PRIX DE<br>GROS</strong><small id="grosSmall">dès 10 articles</small></div>
+        <div class="vt-banner-img" id="bannerImg1"></div>
+        <div class="vt-banner-side">
+          <span class="vt-banner-kicker">Automatique, sur tout le panier</span>
+          <h3>Jusqu'à −20 %</h3>
+          <p id="proText">Dès 10 articles dans votre panier, tous parfums confondus, le prix de gros s'applique tout seul sur toute la commande.</p>
+          <div class="vt-banner-btns">
+            <a href="#collection" class="vt-btn vt-btn-gold">Composer ma commande</a>
+            <a class="vt-btn vt-btn-ghost" id="proWa" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
         </div>
-      </aside>
-    </section>
-
-    <!-- Tuiles catégories -->
-    <section class="container jm-block jm-tiles-block">
-      <div class="jm-block-head dark"><h2>Nos parfums à prix doux</h2><span>Choisissez votre univers</span></div>
-      <div class="jm-tiles" id="catTiles"></div>
-    </section>
-
-    <!-- Ventes flash (promos) -->
-    <section class="container jm-block jm-band" id="promos" hidden>
-      <div class="jm-band-head">
-        <h2><span data-ico="sparkle"></span> Ventes Flash</h2>
-        <span class="jm-timer" id="flashTimer"></span>
-        <a href="#collection" data-cat-link="Promos" class="jm-more">Voir plus <span data-ico="arrow"></span></a>
       </div>
+    </section>
+
+    <!-- Ventes flash (si promos) -->
+    <section class="container vt-section" id="promos" hidden>
+      <div class="vt-title"><h2>Promotions</h2><p><span id="flashTimer"></span></p></div>
       <div class="rail-wrap">
-        <div class="rail jm-rail" id="promoRail"></div>
+        <div class="rail vt-rail" id="promoRail"></div>
         <button class="rail-btn prev" data-rail="promoRail" data-dir="-1" aria-label="Précédent"></button>
         <button class="rail-btn next" data-rail="promoRail" data-dir="1" aria-label="Suivant"></button>
       </div>
     </section>
 
-    <!-- Les plus populaires -->
-    <section class="container jm-block jm-band jm-band-dark" id="populaires">
-      <div class="jm-band-head">
-        <h2><span data-ico="crown"></span> Les plus populaires</h2>
-        <a href="#collection" class="jm-more">Voir plus <span data-ico="arrow"></span></a>
+    <!-- 5. Grille produits -->
+    <section class="container vt-section" id="collection">
+      <div class="vt-title">
+        <h2>Nos parfums</h2>
+        <p>Eaux de parfum et essences by CCK, au détail et en gros</p>
       </div>
-      <div class="rail-wrap">
-        <div class="rail jm-rail" id="popularRail"></div>
-        <button class="rail-btn prev" data-rail="popularRail" data-dir="-1" aria-label="Précédent"></button>
-        <button class="rail-btn next" data-rail="popularRail" data-dir="1" aria-label="Suivant"></button>
-      </div>
-    </section>
-
-    <!-- Formats & prix -->
-    <section class="container jm-block" id="formats">
-      <div class="jm-block-head"><h2>Formats &amp; prix</h2><span>Chaque parfum existe en 3 formats</span></div>
-      <div class="jm-formats" id="formatGrid"></div>
-    </section>
-
-    <!-- Prix de gros -->
-    <section class="container jm-gros" id="gros">
-      <div class="jm-gros-inner">
-        <div>
-          <p class="jm-gros-kicker">Revendeurs &amp; grossistes</p>
-          <h2>Le prix de gros s'applique <em>tout seul</em></h2>
-          <p id="proText">Dès 10 articles dans votre panier, tous parfums confondus, le prix de gros s'applique sur toute la commande.</p>
-        </div>
-        <div class="jm-gros-cta">
-          <a href="#collection" class="jm-btn jm-btn-dark">Composer ma commande <span data-ico="arrow"></span></a>
-          <a class="jm-btn jm-btn-line" id="proWa" target="_blank" rel="noopener"><span data-ico="whatsapp"></span> Parler à la boutique</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Catalogue avec filtres -->
-    <section class="container jm-catalog" id="collection">
-      <aside class="jm-filters">
-        <h3>Catégories</h3>
+      <div class="vt-toolbar">
         <div class="chips" id="chips" role="tablist"></div>
-      </aside>
-      <div class="jm-catalog-main">
-        <div class="jm-catalog-head">
-          <div><h2>Tous nos parfums</h2><span id="resultCount"></span></div>
-          <label class="jm-sort">Trier par
-            <select id="sortSelect" aria-label="Trier">
-              <option value="new">Nouveautés</option>
-              <option value="price-asc">Prix croissant</option>
-              <option value="price-desc">Prix décroissant</option>
-              <option value="promo">Promotions d'abord</option>
-            </select>
+        <div class="vt-toolbar-right">
+          <label class="search-field">
+            <span data-ico="search"></span>
+            <input type="search" id="searchInput" placeholder="Rechercher un parfum…" autocomplete="off">
           </label>
+          <select id="sortSelect" aria-label="Trier">
+            <option value="new">Nouveautés</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="promo">Promotions d'abord</option>
+          </select>
         </div>
-        <div class="grid jm-grid" id="grid"></div>
-        <p class="empty" id="emptyGrid" hidden>Aucun parfum ne correspond à votre recherche.</p>
+      </div>
+      <p class="vt-count" id="resultCount"></p>
+      <div class="grid vt-grid" id="grid"></div>
+      <p class="empty" id="emptyGrid" hidden>Aucun parfum ne correspond à votre recherche.</p>
+    </section>
+
+    <!-- 6. Bannière dorée : formats & prix (le flacon déborde) -->
+    <section class="container vt-banner vt-banner-gold" id="formats">
+      <div class="vt-banner-inner">
+        <div class="vt-banner-big"><span class="vt-banner-kicker">Formats &amp; prix</span><strong>DÈS<br>1 000 F</strong><small>l'essence de parfum</small></div>
+        <div class="vt-banner-img" id="bannerImg2"></div>
+        <div class="vt-banner-side">
+          <span class="vt-banner-kicker">Chaque parfum en 3 formats</span>
+          <ul class="vt-formats" id="formatGrid"></ul>
+          <a href="#collection" class="vt-btn vt-btn-dark">Choisir mon parfum</a>
+        </div>
       </div>
     </section>
+
+    <!-- 7. Conseils (équivalent « Recent News ») -->
+    <section class="container vt-section" id="conseils">
+      <div class="vt-title vt-title-center"><h2>Conseils parfum</h2><p>Les questions qu'on nous pose le plus souvent</p></div>
+      <div class="vt-news" id="news"></div>
+    </section>
+
+    <!-- 8. Bande des signatures (équivalent bande de logos) -->
+    <section class="vt-logos" aria-hidden="true"><div class="container vt-logos-inner" id="logoStrip"></div></section>
 
     <!-- Client de la semaine -->
-    <section class="container jm-block jm-best" id="client-semaine">
+    <section class="container vt-section vt-best" id="client-semaine">
       <div class="best-wrap">
         <div class="best-intro">
-          <p class="jm-gros-kicker">Fidélité</p>
-          <h2>Client(e) de la semaine</h2>
-          <p class="section-sub" id="bestSub">Chaque semaine, nous mettons à l'honneur nos clients les plus fidèles.</p>
+          <div class="vt-title"><h2>Client(e) de la semaine</h2><p id="bestSub">Chaque semaine, nous mettons à l'honneur nos clients les plus fidèles.</p></div>
           <p class="best-reward" id="bestReward"></p>
         </div>
         <div class="podium" id="podium"></div>
       </div>
     </section>
-
-    <!-- Garanties -->
-    <section class="container jm-trust" id="aide">
-      <div><span data-ico="sparkle"></span><b>Conçus par nos soins</b><small>Eaux de parfum &amp; essences by CCK</small></div>
-      <div><span data-ico="truck"></span><b>Livraison rapide</b><small>Bouaké et toute la Côte d'Ivoire</small></div>
-      <div><span data-ico="cash"></span><b>Paiement à la livraison</b><small>Espèces ou mobile money</small></div>
-      <div><span data-ico="whatsapp"></span><b>Service client</b><small id="trustPhone"></small></div>
-    </section>
   </main>
 
-  <footer class="footer jm-footer" id="contact">
-    <div class="container jm-footer-top">
-      <div class="logo logo-light" id="footerLogo"></div>
-      <div class="lx-social-links" id="socialBig"></div>
-    </div>
-    <div class="container footer-grid">
+  <!-- 9. Pied de page -->
+  <footer class="vt-footer" id="contact">
+    <div class="container vt-footer-grid">
       <div>
-        <h4>Doc's Parfumerie</h4>
+        <div class="logo vt-logo" id="footerLogo"></div>
         <p class="footer-tag" id="footerTag"></p>
         <div class="socials" id="socials"></div>
       </div>
       <div>
-        <h4>Commander</h4>
-        <p id="deliveryInfo"></p>
-        <p>Paiement à la livraison <span id="waveMention"></span></p>
+        <h4>Liens rapides</h4>
+        <ul class="vt-links">
+          <li><a href="#collection">Nos parfums</a></li>
+          <li><a href="#formats">Formats &amp; prix</a></li>
+          <li><a href="#gros">Prix de gros</a></li>
+          <li><a href="#conseils">Conseils</a></li>
+        </ul>
       </div>
       <div>
         <h4>Contact</h4>
         <p><a id="footerWa" target="_blank" rel="noopener"></a></p>
         <p id="footerAddress"></p>
         <p id="footerEmail"></p>
+        <p id="deliveryInfo" class="vt-small"></p>
+        <p class="vt-small">Paiement à la livraison <span id="waveMention"></span></p>
+      </div>
+      <div>
+        <h4 class="vt-news-title">Nouveautés &amp; promos</h4>
+        <p class="vt-small">Recevez nos nouveaux parfums et nos offres directement sur WhatsApp.</p>
+        <a class="vt-btn vt-btn-dark vt-btn-block" id="newsWa" target="_blank" rel="noopener">Je m'abonne sur WhatsApp</a>
+        <div class="lx-social-links" id="socialBig" hidden></div>
       </div>
     </div>
     <div class="container footer-bottom">

@@ -14,7 +14,7 @@ window.CATALOGUE = (function () {
     slug, name, category, color, brand: "", description: DESC,
     notes_top: "", notes_heart: "", notes_base: "",
     variants: FORMATS(), promo_pct: null, promo_until: null,
-    image_url: `assets/img/produits/${slug}.jpg`, gallery: [], featured: true, active: true,
+    image_url: `assets/img/produits/${slug}.jpg`, cutout_url: `assets/img/detoures/${slug}.png`, gallery: [], featured: true, active: true,
   });
   return [
     P("tobacco-vanille", "Tobacco Vanille", "Mixte", "#7a4a22"),
