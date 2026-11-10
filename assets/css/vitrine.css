@@ -5,9 +5,11 @@
    Couleurs : noir & or du logo, + teintes reprises des flacons.
    ===================================================================== */
 .vt {
-  --noir: #141414; --or: #dca524; --or-clair: #ffe39a; --or-fonce: #9a6a10;
-  --or-grad: linear-gradient(135deg, #ffe8a3 0%, #f0c34a 35%, #d39a1d 70%, #a06c12 100%);
-  --panneau: #efedea; --panneau-2: #f6f5f2; --trait: #e6e2dc; --texte: #151515; --doux: #7a746c;
+  /* palette tirée de la photo de couverture */
+  --noir: #0b0b0b; --or: #c9963a; --or-clair: #f3d28c; --or-fonce: #8a5f22;
+  --or-grad: linear-gradient(135deg, #f6dc9c 0%, #dcae55 38%, #b58449 70%, #8a5f22 100%);
+  --rose: #e6c5bc; --rose-fonce: #d69b8b; --bronze: #4a2a1c; --ambre: #c8962e;
+  --panneau: #f2eef0; --panneau-2: #f8f5f6; --trait: #e8e2e3; --texte: #121212; --doux: #7c7270;
   --gold: #dca524; --gold-2: #a8750f; --gold-soft: #ffe39a; --gold-text: #8a5c06;
   --ink: #141414; --paper: #ffffff; --cream: #f4f1ec;
   --serif: "Poppins", system-ui, sans-serif; --sans: "Poppins", system-ui, sans-serif;
@@ -84,18 +86,19 @@
 .vt-tile img { position: absolute; z-index: 2; right: 8%; bottom: 0; height: 92%; width: auto; max-width: 55%; object-fit: contain; filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .35)); transition: transform .5s; }
 .vt-tile.wide img { right: 10%; height: 96%; }
 .vt-tile:hover img { transform: translateY(-6px) rotate(-3deg); }
-.t-noir { background: #141414; color: #fff; }
+.t-noir { background: #0b0b0b; color: #fff; }
 .t-noir .vt-pill { background: var(--or-grad); }
 .t-or { background: var(--or-grad); color: var(--noir); }
 .t-or .vt-pill { background: var(--noir); color: #fff; }
-.t-brun { background: linear-gradient(120deg, #24170d, #4a3120); color: #fff; }
+.t-brun { background: linear-gradient(120deg, #2a1810, #5a3524); color: #fff; }
 .t-brun .vt-tile-ghost { color: var(--or); opacity: .3; }
 .t-brun .vt-pill { background: var(--or-grad); }
 .t-gris { background: var(--panneau); color: var(--noir); }
 .t-gris .vt-pill { background: var(--noir); color: #fff; }
 .t-gris .vt-tile-ghost { color: #fff; opacity: 1; font-size: 64px; }
-.t-rose { background: #f4cdd4; color: #3a1a22; }
-.t-bleu { background: #2453b8; color: #fff; }
+.t-rose { background: linear-gradient(135deg, #f1d9d2, #e2b4a6); color: #3a1d16; }
+.t-bleu { background: linear-gradient(135deg, #d8a94e, #8a5f22); color: #0b0b0b; }
+.t-bleu .vt-pill { background: #0b0b0b; color: #fff; }
 
 /* ---------- 3. garanties ---------- */
 .vt-perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 30px; padding: 26px 0; }
@@ -172,9 +175,9 @@
 .vt-news-card p { margin: 0; font-size: 14px; line-height: 1.65; color: var(--doux); }
 .vt-news-img { position: relative; height: 200px; border-radius: 18px; overflow: hidden; }
 .vt-news-img img { position: absolute; inset: 0; margin: auto; height: 86%; width: 80%; object-fit: contain; filter: drop-shadow(0 16px 16px rgba(0, 0, 0, .3)); transform: rotate(-8deg); }
-.vt-news-img.n1 { background: linear-gradient(120deg, #24170d, #4a3120); }
+.vt-news-img.n1 { background: linear-gradient(120deg, #2a1810, #5a3524); }
 .vt-news-img.n2 { background: var(--panneau); }
-.vt-news-img.n3 { background: #f4cdd4; }
+.vt-news-img.n3 { background: linear-gradient(135deg, #f1d9d2, #e2b4a6); }
 
 /* ---------- 8. bande des signatures ---------- */
 .vt-logos { margin-top: 84px; background: var(--panneau-2); padding: 34px 0; }
@@ -292,4 +295,23 @@
   .vt .search-field { min-width: 0; }
   .vt-logos span { font-size: 17px; }
   .vt-footer-grid { grid-template-columns: 1fr; gap: 26px; }
+}
+
+/* ---------- couverture : photo de campagne ---------- */
+.vt-hero { background: radial-gradient(70% 90% at 70% 40%, #ffffff 0%, var(--panneau) 75%); }
+.vt-cover .vt-ghost { color: #fff; top: 56%; z-index: 1; }
+.vt-cover-img { position: absolute; z-index: 2; right: 0; bottom: 0; height: 100%; width: auto; max-width: 58%; object-fit: contain; object-position: bottom right; mix-blend-mode: multiply; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 16%, #000 88%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 16%, #000 88%, transparent 100%); }
+.vt-cover .vt-slide-text { top: 15%; max-width: 44%; }
+.vt-cover h1 { font-size: clamp(42px, 5vw, 66px); line-height: 1.02; }
+.vt-cover h1 em { font-style: normal; background: var(--or-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.vt-cover .vt-slide-desc { left: 7%; right: auto; bottom: 7%; text-align: left; max-width: 300px; z-index: 3; padding-top: 14px; border-top: 1px solid var(--trait); }
+.vt-link-btn { margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; font: 600 13px/1 var(--sans); color: var(--noir); border-bottom: 2px solid var(--or); padding-bottom: 3px; }
+.vt-slide.vt-cover { opacity: 1; visibility: visible; }
+@media (max-width: 900px) {
+  .vt-hero { height: auto; }
+  .vt-slide.vt-cover { position: relative; display: flex; flex-direction: column; }
+  .vt-cover .vt-slide-text { position: relative; inset: auto; padding: 30px 22px 0; max-width: none; }
+  .vt-cover-img { position: relative; right: auto; max-width: 100%; width: 100%; height: auto; margin-top: 8px; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%); mask-image: linear-gradient(180deg, transparent 0%, #000 12%); }
+  .vt-cover .vt-ghost { top: auto; bottom: 34%; font-size: 21vw; }
+  .vt-cover .vt-slide-desc { display: block; position: relative; left: auto; bottom: auto; padding: 0 22px 26px; max-width: none; text-align: center; margin-top: 0; padding-top: 18px; border-top: 0; background: var(--panneau); }
 }

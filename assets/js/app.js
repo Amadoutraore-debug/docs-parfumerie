@@ -71,30 +71,25 @@
   let slideIdx = 0, slideTimer;
   function heroList() { return [...state.products].filter((p) => cut(p)).sort((a, b) => b.featured - a.featured).slice(0, 5); }
   function renderHero() {
-    const list = heroList();
-    if (!list.length) return;
-    slideIdx = slideIdx % list.length;
-    $("#hero").innerHTML = list.map((p, i) => {
-      const words = p.name.split(" ");
-      const first = words.length > 1 ? words.slice(0, -1).join(" ") : "Eau de parfum";
-      const big = words.length > 1 ? words[words.length - 1] : p.name;
-      return `
-      <article class="vt-slide ${i === slideIdx ? "on" : ""}" aria-hidden="${i !== slideIdx}">
-        <span class="vt-ghost" aria-hidden="true">${esc(lastWord(p.name))}</span>
+    // Couverture : la photo de campagne (mannequin + Terre d'Hermès) à droite
+    const star = findP(/terre/i, 0);
+    const from = state.products.length ? Math.min(...state.products.map(unitPrice)) : 1000;
+    $("#hero").innerHTML = `
+      <article class="vt-slide vt-cover on">
+        <span class="vt-ghost" aria-hidden="true">PRÉSENCE</span>
         <div class="vt-slide-text">
-          <p class="vt-small-label">${esc(first)}</p>
-          <h1>${esc(big)}</h1>
-          <p class="vt-slide-cat">${esc(p.category)} · by CCK</p>
-          <button class="vt-btn vt-btn-gold" data-open-btn="${p.id}">Voir le parfum</button>
+          <p class="vt-small-label">Doc’s parfumerie by CCK</p>
+          <h1>Marquez votre <em>présence</em></h1>
+          <p class="vt-slide-cat">Eaux de parfum &amp; essences · dès ${fmt(from)}</p>
+          <a href="#collection" class="vt-btn vt-btn-gold">Découvrir nos parfums</a>
         </div>
-        <div class="vt-slide-img"><img src="${esc(cut(p))}" alt="${esc(p.name)}"></div>
-        <div class="vt-slide-desc">
-          <b>Description</b>
-          <p>Eau de parfum 30 ml ou 50 ml, ou essence de parfum. Dès <b>${fmt(unitPrice(p))}</b>, prix de gros dès ${wholesaleMin() || 10} articles.</p>
-        </div>
+        <img class="vt-cover-img" src="assets/img/couverture.jpg" alt="Mannequin tenant le parfum Terre d'Hermès by CCK">
+        ${star ? `<div class="vt-slide-desc">
+          <b>${esc(star.name)}</b>
+          <p>Eau de parfum 50 ml à <b>${fmt(5000)}</b>, aussi en 30 ml et en essence. Prix de gros dès ${wholesaleMin() || 10} articles.</p>
+          <button class="vt-link-btn" data-open-btn="${star.id}">Voir le parfum ${icon("arrow", 14)}</button>
+        </div>` : ""}
       </article>`;
-    }).join("") + `<div class="vt-dots">${list.map((_, i) => `<button class="${i === slideIdx ? "on" : ""}" data-dot="${i}" aria-label="Parfum ${i + 1}"></button>`).join("")}</div>`;
-    clearInterval(slideTimer); slideTimer = setInterval(() => goSlide(slideIdx + 1), 6000);
     renderBento();
     renderBanners();
     renderNews();
@@ -118,7 +113,7 @@
       { cls: "t-brun wide", label: "Unisexe", title: "Mixte", ghost: "MIXTE", p: byCat("Mixte"), act: `data-cat="Mixte" data-scroll="1"` },
       { cls: "t-gris wide", label: "Revendeurs", title: "Prix de gros", ghost: "GROS", p: findP(/terre/i, 3), act: `data-go="#gros"` },
       { cls: "t-rose", label: "Coup de cœur", title: "Sucre Rose", ghost: "ROSE", p: findP(/sucre/i, 1), open: true },
-      { cls: "t-bleu", label: "Nouveauté", title: "Pi Givenchy", ghost: "BLUE", p: findP(/givenchy/i, 2), open: true },
+      { cls: "t-bleu", label: "Nouveauté", title: "Pi Givenchy", ghost: "ÉCLAT", p: findP(/givenchy/i, 2), open: true },
     ].filter((t) => t.p);
     $("#bento").innerHTML = tiles.map((t) => `
       <button class="vt-tile ${t.cls}" ${t.open ? `data-open-btn="${t.p.id}"` : t.act}>
